@@ -5,67 +5,37 @@
 	<script type="text/javascript" src="paper-full.js"></script>
 	<link rel="stylesheet" type="text/css" href="circles.css">
 
-	<script type="text/paperscript" canvas="myCanvas">
-	<!-- Create a Paper.js Path to draw a line into it: -->
-	var path = new Path();
-	<!-- Give the stroke a color -->
-	path.strokeColor = 'black';
-	var start = new Point(100, 100);
-	<!-- Move to start and draw a line from there -->
-	path.moveTo(start);
-	<!-- Note the plus operator on Point objects. -->
-	<!-- PaperScript does that for us, and much more! -->
-	path.lineTo(start + [ 500, 0 ]);
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.0.2/howler.core.min.js"></script>
 	
-	var myCircle = new Path.Circle(new Point(40, 20), 20);
-	myCircle.fillColor = 'black';
 
-	var myCircle2 = new Path.Circle(new Point(50, 50), 300);
-	myCircle2.fillColor = 'purple';
+	<script type="text/javascript" src="paper-full.js"></script>
+	<script type="text/paperscript" canvas="myCanvas">
+	
+	var sound = new Howl({
+  		src: ['sounds/bubbles.mp3']
+	});
 
-	// Create a new path once, when the script is executed:
-	var myPath = new Path();
-	myPath.strokeColor = 'black';
+	var circles = [];
 
-	// This function is called whenever the user
-	// clicks the mouse in the view:
-	function onMouseDown(event) {
-	// Add a segment to the path at the position of the mouse:
-	myPath.add(event.point);
-}
-
-	function onMouseDown(event) {
-		console.log('You pressed the mouse!');
+	function onKeyDown(event) {
+		sound.play();
+		var maxPoint = new Point(view.size.width, view.size.height);
+		var randomPoint = Point.random();
+		var point = maxPoint * randomPoint;
+		var newCircle = new Path.Circle(point, 500);
+		newCircle.fillColor = "orange";
+		circles.push(newCircle);
+		}
+	
+	
+	function onFrame(event){
+		for(var i = 0; i < circles.length; i++){
+			circles[i].fillColor.hue += 1;
+			circles[i].scale(.9);
+		}
 	}
-
-	function onMouseDrag(event) {
-		console.log('You dragged the mouse!');
-	}
-
-	function onMouseUp(event) {
-		console.log('You released the mouse!');
-	}
-
-	var myPath;
-
-	function onMouseDown(event) {
-		myPath = new Path();
-		myPath.strokeColor = 'yellow';
-	}
-
-	function onMouseDrag(event) {
-		myPath.add(event.point);
-	}
-
-	function onMouseUp(event) {
-		var myCircle = new Path.Circle({
-			center: event.point,
-			radius: 20
-		});
-		myCircle.strokeColor = 'black';
-		myCircle.fillColor = 'green';
-	}
-
+	
+	
 	</script>
 
 	
